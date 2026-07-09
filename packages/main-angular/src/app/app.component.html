@@ -1,0 +1,22 @@
+<div class="main-app">
+  <nav class="nav-bar">
+    <h1 class="logo">{{ title }}</h1>
+    <ul class="nav-links">
+      <li>
+        <a routerLink="/" routerLinkActive="active" (click)="navigate('/')">首页</a>
+      </li>
+      <li>
+        <a routerLink="/react" routerLinkActive="active" (click)="navigate('/react')">React 微应用</a>
+      </li>
+      <li>
+        <a routerLink="/vue" routerLinkActive="active" (click)="navigate('/vue')">Vue 微应用</a>
+      </li>
+      <li>
+        <a routerLink="/static" routerLinkActive="active" (click)="navigate('/static')">静态微应用</a>
+      </li>
+    </ul>
+  </nav>
+  <main class="content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

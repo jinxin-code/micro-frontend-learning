@@ -1,0 +1,10 @@
+{
+  "name": "main-vanilla",
+  "version": "1.0.0",
+  "scripts": {
+    "serve": "python3 -m http.server 8101"
+  },
+  "dependencies": {
+    "qiankun": "^2.10.16"
+  }
+}
