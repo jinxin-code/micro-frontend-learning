@@ -1,0 +1,7 @@
+{
+  "name": "static-app",
+  "version": "1.0.0",
+  "scripts": {
+    "serve": "python3 -m http.server 8302"
+  }
+}

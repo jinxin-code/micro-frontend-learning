@@ -1,0 +1,17 @@
+{
+  "name": "single-spa-demo",
+  "version": "1.0.0",
+  "description": "single-spa micro-frontend learning project",
+  "private": true,
+  "scripts": {
+    "install:all": "pnpm install",
+    "start:main": "pnpm --filter main-app dev",
+    "start:main-react": "pnpm --filter main-react dev",
+    "start:react": "pnpm --filter react-app dev",
+    "start:vue": "pnpm --filter vue-app dev",
+    "start:static": "pnpm --filter static-app serve"
+  },
+  "keywords": ["single-spa", "micro-frontend", "vue", "react"],
+  "author": "",
+  "license": "MIT"
+}

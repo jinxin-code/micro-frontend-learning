@@ -41,9 +41,15 @@ micro-frontend/
 │   ├── README.md             # qiankun 方案详细文档
 │   └── package.json          # qiankun 方案脚本
 │
-└── single-spa/               # single-spa 方案（计划中）
-    ├── README.md             # single-spa 方案详细文档（待创建）
-    └── packages/             # single-spa 项目（待创建）
+└── single-spa/               # single-spa 方案（已完成）
+    ├── packages/
+    │   ├── main-app/         # Vue 3 主应用 - 端口 8201
+    │   ├── main-react/       # React 主应用 - 端口 8202
+    │   ├── react-app/        # React 微应用 - 端口 8300
+    │   ├── vue-app/          # Vue 微应用 - 端口 8301
+    │   └── static-app/       # 静态微应用 - 端口 8302
+    ├── README.md             # single-spa 方案详细文档
+    └── package.json          # single-spa 方案脚本
 ```
 
 ---
@@ -73,6 +79,21 @@ micro-frontend/
 | main-umi | Umi + @umijs/plugin-qiankun | 8103 |
 | main-angular | Angular 18 + Angular Router | 8104 |
 | main-midway | Midway BFF + 静态前端 | 8105 |
+
+### single-spa 主应用技术栈
+
+| 应用 | 技术栈 | 端口 |
+|------|--------|------|
+| main-app | Vue 3 + single-spa | 8201 |
+| main-react | React 18 + single-spa | 8202 |
+
+### single-spa 微应用技术栈
+
+| 应用 | 技术栈 | 端口 |
+|------|--------|------|
+| react-app | React 18 + vite-plugin-single-spa | 8300 |
+| vue-app | Vue 3 + vite-plugin-single-spa | 8301 |
+| static-app | HTML/CSS/JavaScript | 8302 |
 
 ---
 
@@ -110,6 +131,27 @@ cd packages/main-midway && pnpm dev    # Midway 主应用 - http://localhost:810
 
 详细的启动说明请查看 [qiankun/README.md](qiankun/README.md)
 
+### 启动 single-spa 方案
+
+```bash
+# 进入 single-spa 目录
+cd single-spa
+
+# 安装依赖
+pnpm install
+
+# 启动微应用（3个终端）
+cd packages/react-app && pnpm dev      # http://localhost:8300
+cd packages/vue-app && pnpm dev        # http://localhost:8301
+cd packages/static-app && pnpm serve   # http://localhost:8302
+
+# 启动主应用（选择任意一个）
+cd packages/main-app && pnpm dev       # Vue 主应用 - http://localhost:8201
+cd packages/main-react && pnpm dev     # React 主应用 - http://localhost:8202
+```
+
+详细的启动说明请查看 [single-spa/README.md](single-spa/README.md)
+
 ---
 
 ## 🎯 学习路线
@@ -121,7 +163,7 @@ cd packages/main-midway && pnpm dev    # Midway 主应用 - http://localhost:810
 3. **框架对比**：分别启动不同技术栈的主应用，对比接入方式的差异
 4. **进阶学习**：阅读源码，理解沙箱机制、样式隔离原理
 
-### 第二阶段：single-spa 入门（计划中）
+### 第二阶段：single-spa 入门（已完成）
 
 1. **了解 single-spa**：阅读官方文档，理解核心概念
 2. **启动项目**：启动 single-spa 方案
@@ -142,9 +184,10 @@ cd packages/main-midway && pnpm dev    # Midway 主应用 - http://localhost:810
 - [qiankun GitHub](https://github.com/umijs/qiankun)
 - [@umijs/plugin-qiankun](https://github.com/umijs/plugins/tree/master/packages/plugin-qiankun)
 
-### single-spa 相关（计划中）
+### single-spa 相关
 - [single-spa 官方文档](https://single-spa.js.org/)
 - [single-spa GitHub](https://github.com/single-spa/single-spa)
+- [vite-plugin-single-spa](https://github.com/joeldenning/vite-plugin-single-spa)
 
 ---
 
@@ -157,9 +200,9 @@ cd packages/main-midway && pnpm dev    # Midway 主应用 - http://localhost:810
 - [x] 编写 qiankun 详细文档
 
 ### 计划任务
-- [ ] 创建 single-spa 方案项目
-- [ ] 实现 single-spa 主应用和微应用
-- [ ] 编写 single-spa 详细文档
+- [x] 创建 single-spa 方案项目
+- [x] 实现 single-spa 主应用和微应用
+- [x] 编写 single-spa 详细文档
 - [ ] 编写 qiankun vs single-spa 对比文档
 
 ---

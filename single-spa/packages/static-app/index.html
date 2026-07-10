@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>静态微应用 - single-spa</title>
+  <style>
+    .static-app {
+      padding: 24px;
+      min-height: 500px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+    .header h2 { color: #2c3e50; margin-bottom: 8px; }
+    .header p { color: #7f8c8d; margin-bottom: 32px; }
+    .counter {
+      background: #f8f9fa;
+      padding: 24px;
+      border-radius: 8px;
+      margin-bottom: 24px;
+    }
+    .counter h3 { color: #34495e; margin-bottom: 16px; }
+    .count { font-size: 24px; font-weight: 600; color: #9b59b6; margin-bottom: 16px; }
+    .btn {
+      padding: 12px 24px;
+      background: #9b59b6;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-right: 12px;
+      transition: background 0.3s;
+    }
+    .btn:hover { background: #8e44ad; }
+    .features {
+      background: #f8f9fa;
+      padding: 24px;
+      border-radius: 8px;
+    }
+    .features h3 { color: #34495e; margin-bottom: 16px; }
+    .features ul { list-style: none; }
+    .features li {
+      color: #7f8c8d;
+      padding: 8px 0 8px 24px;
+      position: relative;
+    }
+    .features li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: #27ae60;
+    }
+  </style>
+</head>
+<body>
+  <div class="static-app">
+    <div class="header">
+      <h2>静态微应用 (single-spa)</h2>
+      <p>这是一个纯静态 HTML/JS 微应用，通过 single-spa 加载</p>
+    </div>
+    <div class="counter">
+      <h3>计数器</h3>
+      <p class="count">当前计数: <span id="count">0</span></p>
+      <button class="btn" onclick="updateCount(1)">增加</button>
+      <button class="btn" onclick="updateCount(-1)">减少</button>
+      <button class="btn" onclick="updateCount(0)">重置</button>
+    </div>
+    <div class="features">
+      <h3>特性</h3>
+      <ul>
+        <li>纯静态 HTML/CSS/JS</li>
+        <li>无需构建工具</li>
+        <li>通过 SystemJS 加载</li>
+      </ul>
+    </div>
+  </div>
+  <script>
+    let count = 0
+    
+    function updateCount(delta) {
+      if (delta === 0) {
+        count = 0
+      } else {
+        count += delta
+      }
+      document.getElementById('count').textContent = count
+    }
+    
+    if (typeof System !== 'undefined') {
+      System.register('static-app', [], function(_export) {
+        return {
+          execute: function() {
+            _export({
+              bootstrap: function(props) { console.log('Static app bootstrap:', props); return Promise.resolve() },
+              mount: function(props) { console.log('Static app mount:', props); return Promise.resolve() },
+              unmount: function(props) { console.log('Static app unmount:', props); return Promise.resolve() }
+            })
+          }
+        }
+      })
+    }
+  </script>
+</body>
+</html>
