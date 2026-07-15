@@ -9,14 +9,14 @@
 
 ## 📖 项目简介
 
-本项目旨在帮助开发者全面掌握微前端架构的核心概念和实践。通过对比学习 **qiankun** 和 **single-spa** 两种主流方案，你将深入理解：
+本项目旨在帮助开发者全面掌握微前端架构的核心概念和实践。通过对比学习 **qiankun**、**single-spa** 和 **Module Federation** 三种主流方案，你将深入理解：
 
 - **微应用注册与加载机制**
 - **生命周期管理**
 - **全局状态通信**
 - **样式隔离**
 - **不同框架的接入差异**
-- **两种方案的优缺点对比**
+- **三种方案的优缺点对比**
 
 ---
 
@@ -41,33 +41,44 @@ micro-frontend/
 │   ├── README.md             # qiankun 方案详细文档
 │   └── package.json          # qiankun 方案脚本
 │
-└── single-spa/               # single-spa 方案（已完成）
+├── single-spa/               # single-spa 方案（已完成）
+│   ├── packages/
+│   │   ├── main-app/         # Vue 3 主应用 - 端口 8201
+│   │   ├── main-react/       # React 主应用 - 端口 8202
+│   │   ├── react-app/        # React 微应用 - 端口 8300
+│   │   ├── vue-app/          # Vue 微应用 - 端口 8301
+│   │   └── static-app/       # 静态微应用 - 端口 8302
+│   ├── README.md             # single-spa 方案详细文档
+│   └── package.json          # single-spa 方案脚本
+│
+└── module-federation/        # Module Federation 方案（已完成）
     ├── packages/
-    │   ├── main-app/         # Vue 3 主应用 - 端口 8201
-    │   ├── main-react/       # React 主应用 - 端口 8202
-    │   ├── react-app/        # React 微应用 - 端口 8300
-    │   ├── vue-app/          # Vue 微应用 - 端口 8301
-    │   └── static-app/       # 静态微应用 - 端口 8302
-    ├── README.md             # single-spa 方案详细文档
-    └── package.json          # single-spa 方案脚本
+    │   ├── host-app/         # React 主应用 - 端口 8401
+    │   ├── remote-react/     # React 远程应用 - 端口 8402
+    │   ├── remote-vue/       # Vue 远程应用 - 端口 8403
+    │   └── remote-utils/     # 工具组件远程应用 - 端口 8404
+    ├── README.md             # Module Federation 方案详细文档
+    └── package.json          # Module Federation 方案脚本
 ```
 
 ---
 
 ## 🔧 技术栈对比
 
-### 两大微前端方案
+### 三大微前端方案
 
-| 维度 | qiankun | single-spa |
-|------|---------|------------|
-| **定位** | 企业级微前端解决方案 | 微前端底层框架 |
-| **封装程度** | 高（开箱即用） | 低（需要自己封装） |
-| **样式隔离** | 内置支持 | 需要额外配置 |
-| **JS 沙箱** | 内置支持 | 需要额外配置 |
-| **官方插件** | 丰富（Umi 等） | 较少 |
-| **学习成本** | 低 | 高 |
-| **生产成熟度** | 高 | 高 |
-| **社区活跃度** | 高 | 高 |
+| 维度 | qiankun | single-spa | Module Federation |
+|------|---------|------------|-------------------|
+| **定位** | 企业级微前端解决方案 | 微前端底层框架 | 构建时模块共享 |
+| **封装程度** | 高（开箱即用） | 低（需要自己封装） | 中等 |
+| **样式隔离** | 内置支持 | 需要额外配置 | 需要额外配置 |
+| **JS 沙箱** | 内置支持 | 需要额外配置 | 无运行时隔离 |
+| **依赖共享** | 手动配置 | 手动配置 | 自动共享（shared） |
+| **加载方式** | HTML Entry | SystemJS | 模块级加载 |
+| **跨框架** | ✅ | ✅ | ✅ |
+| **学习成本** | 低 | 高 | 中等 |
+| **生产成熟度** | 高 | 高 | 高 |
+| **社区活跃度** | 高 | 高 | 高 |
 
 ### qiankun 主应用技术栈
 
@@ -94,6 +105,20 @@ micro-frontend/
 | react-app | React 18 + vite-plugin-single-spa | 8300 |
 | vue-app | Vue 3 + vite-plugin-single-spa | 8301 |
 | static-app | HTML/CSS/JavaScript | 8302 |
+
+### Module Federation Host 主应用
+
+| 应用 | 技术栈 | 端口 |
+|------|--------|------|
+| host-app | React 18 + Webpack 5 | 8401 |
+
+### Module Federation Remote 远程应用
+
+| 应用 | 技术栈 | 端口 |
+|------|--------|------|
+| remote-react | React 18 + Webpack 5 | 8402 |
+| remote-vue | Vue 3 + Webpack 5 | 8403 |
+| remote-utils | React 18 + Webpack 5 | 8404 |
 
 ---
 
@@ -152,6 +177,26 @@ cd packages/main-react && pnpm dev     # React 主应用 - http://localhost:8202
 
 详细的启动说明请查看 [single-spa/README.md](single-spa/README.md)
 
+### 启动 Module Federation 方案
+
+```bash
+# 进入 module-federation 目录
+cd module-federation
+
+# 安装依赖
+pnpm install
+
+# 启动 Remote 远程应用（3个终端）
+cd packages/remote-react && pnpm dev    # http://localhost:8402
+cd packages/remote-vue && pnpm dev      # http://localhost:8403
+cd packages/remote-utils && pnpm dev    # http://localhost:8404
+
+# 启动 Host 主应用
+cd packages/host-app && pnpm dev        # http://localhost:8401
+```
+
+详细的启动说明请查看 [module-federation/README.md](module-federation/README.md)
+
 ---
 
 ## 🎯 学习路线
@@ -169,9 +214,15 @@ cd packages/main-react && pnpm dev     # React 主应用 - http://localhost:8202
 2. **启动项目**：启动 single-spa 方案
 3. **对比学习**：对比 single-spa 与 qiankun 的实现差异
 
-### 第三阶段：方案对比
+### 第三阶段：Module Federation 入门（已完成）
 
-1. **架构对比**：对比两种方案的架构设计
+1. **了解 Module Federation**：阅读官方文档，理解核心概念
+2. **启动项目**：启动 Module Federation 方案
+3. **对比学习**：对比 Module Federation 与 qiankun/single-spa 的实现差异
+
+### 第四阶段：方案对比
+
+1. **架构对比**：对比三种方案的架构设计
 2. **性能对比**：对比加载速度、运行时性能
 3. **场景选择**：根据业务场景选择合适的方案
 
@@ -189,6 +240,11 @@ cd packages/main-react && pnpm dev     # React 主应用 - http://localhost:8202
 - [single-spa GitHub](https://github.com/single-spa/single-spa)
 - [vite-plugin-single-spa](https://github.com/joeldenning/vite-plugin-single-spa)
 
+### Module Federation 相关
+- [Webpack 5 Module Federation](https://webpack.js.org/concepts/module-federation/)
+- [Module Federation Plugin](https://webpack.js.org/plugins/module-federation-plugin/)
+- [Module Federation Examples](https://github.com/module-federation/module-federation-examples)
+
 ---
 
 ## 📋 待办事项
@@ -203,7 +259,10 @@ cd packages/main-react && pnpm dev     # React 主应用 - http://localhost:8202
 - [x] 创建 single-spa 方案项目
 - [x] 实现 single-spa 主应用和微应用
 - [x] 编写 single-spa 详细文档
-- [ ] 编写 qiankun vs single-spa 对比文档
+- [x] 创建 Module Federation 方案项目
+- [x] 实现 Module Federation Host 和 Remote 应用
+- [x] 编写 Module Federation 详细文档
+- [ ] 编写三种方案对比文档
 
 ---
 

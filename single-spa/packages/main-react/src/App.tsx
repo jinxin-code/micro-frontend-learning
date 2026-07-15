@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { registerApplication, start } from 'single-spa'
+import { registerApplication, start, type LifeCycles } from 'single-spa'
 
 function App() {
   const [currentPath, setCurrentPath] = useState('/')
@@ -8,7 +8,7 @@ function App() {
   useEffect(() => {
     registerApplication({
       name: '@single-spa/react-app',
-      app: () => import('//localhost:8300/main.js'),
+      app: () => (window as unknown as { System: { import: (url: string) => Promise<LifeCycles> } }).System.import('//localhost:8300/main.js'),
       activeWhen: ['/react'],
       customProps: {
         onGlobalStateChange: (state: Record<string, unknown>) => {
@@ -28,7 +28,7 @@ function App() {
 
     registerApplication({
       name: '@single-spa/vue-app',
-      app: () => import('//localhost:8301/main.js'),
+      app: () => (window as unknown as { System: { import: (url: string) => Promise<LifeCycles> } }).System.import('//localhost:8301/main.js'),
       activeWhen: ['/vue'],
       customProps: {
         onGlobalStateChange: (state: Record<string, unknown>) => {

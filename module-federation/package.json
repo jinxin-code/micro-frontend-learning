@@ -1,0 +1,16 @@
+{
+  "name": "module-federation-demo",
+  "version": "1.0.0",
+  "description": "Module Federation micro-frontend learning project",
+  "private": true,
+  "scripts": {
+    "install:all": "pnpm install",
+    "start:host": "pnpm --filter host-app dev",
+    "start:remote-react": "pnpm --filter remote-react dev",
+    "start:remote-vue": "pnpm --filter remote-vue dev",
+    "start:remote-utils": "pnpm --filter remote-utils dev"
+  },
+  "keywords": ["module-federation", "webpack", "micro-frontend", "react", "vue"],
+  "author": "",
+  "license": "MIT"
+}
