@@ -1,4 +1,3 @@
-import React from 'react'
 import { createRoot } from 'react-dom/client'
 import Button from './components/Button'
 import Counter from './components/Counter'
